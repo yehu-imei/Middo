@@ -1,0 +1,30 @@
+# 本机/虚拟机开发记录，不发布到 GitHub
+项目开发.md
+
+# .NET 编译输出和临时文件
+bin/
+obj/
+publish/
+small/
+single/
+p/
+
+# 发布产物和运行时配置
+*.exe
+*.dll
+*.pdb
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+
+# 程序运行时生成的用户配置
+hotkey.json
+
+# 编辑器/系统文件
+.vs/
+.vscode/
+.claude/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
