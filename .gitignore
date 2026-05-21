@@ -8,6 +8,8 @@ publish/
 small/
 single/
 p/
+p-dependent-single/
+p-self-contained/
 
 # 发布产物和运行时配置
 *.exe

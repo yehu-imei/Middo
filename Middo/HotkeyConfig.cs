@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace WindowCenteringTool;
+namespace Middo;
 
 internal class HotkeyConfig
 {

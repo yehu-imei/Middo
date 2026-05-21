@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace WindowCenteringTool;
+namespace Middo;
 
 // 集中声明本工具直接使用的 Win32 API。
 internal static class NativeMethods
@@ -32,6 +32,13 @@ internal static class NativeMethods
     [DllImport("user32.dll")]
     public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
         int X, int Y, int cx, int cy, uint uFlags);
+
+    // 后台托盘状态下收缩进程工作集，降低任务管理器里看到的常驻占用。
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr GetCurrentProcess();
+
+    [DllImport("psapi.dll")]
+    public static extern bool EmptyWorkingSet(IntPtr hProcess);
 
     public const uint MOD_ALT = 0x0001;
     public const uint MOD_CONTROL = 0x0002;

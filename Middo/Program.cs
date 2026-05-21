@@ -1,4 +1,4 @@
-namespace WindowCenteringTool;
+namespace Middo;
 
 internal static class Program
 {
@@ -8,7 +8,7 @@ internal static class Program
         // 用命名互斥锁限制单实例，避免第二个进程抢占同一个全局热键。
         using var singleInstance = new Mutex(
             initiallyOwned: true,
-            name: @"Local\WindowCenteringTool.SingleInstance",
+            name: @"Local\Middo.SingleInstance",
             createdNew: out bool createdNew);
 
         // 已有实例运行时，当前进程直接退出，不弹额外提示。

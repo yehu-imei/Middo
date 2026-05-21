@@ -1,4 +1,4 @@
-# WindowCenteringTool
+# Middo
 
 Windows 托盘工具：按全局快捷键，将当前前台窗口居中到它所在显示器的工作区。
 
@@ -19,15 +19,16 @@ Windows 托盘工具：按全局快捷键，将当前前台窗口居中到它所
 ## 文件结构
 
 ```text
-WindowCenteringTool/
+Middo/
 ├── Program.cs                  # 程序入口、单实例、启动模式
 ├── TrayApplicationContext.cs   # 托盘菜单、热键注册、设置保存、自启
 ├── SettingsWindow.cs           # 设置窗口 UI 和快捷键捕获
 ├── HotkeyConfig.cs             # hotkey.json 配置读写和快捷键格式化
 ├── KeyNames.cs                 # 虚拟键码显示名称
-├── WindowCenteringService.cs   # 当前窗口居中逻辑
+├── MemoryTrimmer.cs            # 后台托盘状态收缩工作集
+├── CenteringService.cs          # 当前窗口居中逻辑
 ├── NativeMethods.cs            # Win32 API 声明
-├── WindowCenteringTool.csproj  # .NET 项目文件
+├── Middo.csproj                # .NET 项目文件
 └── app.ico                     # 程序图标
 ```
 
@@ -79,6 +80,7 @@ dotnet publish -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:Inc
 - `MonitorFromWindow` 和 `GetMonitorInfo` 获取窗口所在显示器工作区。
 - `SetWindowPos` 移动窗口到居中位置。
 - `Microsoft.Win32.Registry` 写入 `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` 实现自启。
+- `GC.Collect` 和 `EmptyWorkingSet` 在设置窗口关闭后收缩后台工作集。
 - `Application.SetHighDpiMode(HighDpiMode.PerMonitorV2)` 和 `TableLayoutPanel` 适配 DPI 缩放。
 
 ## 注意

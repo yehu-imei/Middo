@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace WindowCenteringTool;
+namespace Middo;
 
 /// <summary>
 /// 托盘应用上下文。
@@ -41,7 +41,7 @@ internal class TrayApplicationContext : ApplicationContext
         _notifyIcon = new NotifyIcon
         {
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath)!,
-            Text = "WindowCenteringTool - " + HotkeyConfig.FormatHotkey(_config.Modifiers, _config.Key),
+            Text = "Middo - " + HotkeyConfig.FormatHotkey(_config.Modifiers, _config.Key),
             ContextMenuStrip = contextMenu,
             Visible = true
         };
@@ -52,6 +52,11 @@ internal class TrayApplicationContext : ApplicationContext
         {
             // BeginInvoke 等消息循环启动后再弹设置窗口，避免构造阶段显示窗口。
             _hiddenForm.BeginInvoke(new Action(OpenSettings));
+        }
+        else
+        {
+            // 开机自启只进托盘时，启动稳定后收缩一次工作集。
+            _hiddenForm.BeginInvoke(new Action(() => MemoryTrimmer.TrimSoon()));
         }
     }
 
@@ -116,6 +121,9 @@ internal class TrayApplicationContext : ApplicationContext
             _settingsWindow = null;
             if (!_hotkeyRegistered)
                 RegisterHotkey();
+
+            // 设置窗口关闭后释放 UI 创建过程中扩大的托管堆和工作集。
+            MemoryTrimmer.TrimSoon();
         }
     }
 
@@ -133,7 +141,7 @@ internal class TrayApplicationContext : ApplicationContext
             SetAutoStart(_config.AutoStart);
 
             // 托盘悬停文本同步显示当前快捷键。
-            _notifyIcon.Text = "WindowCenteringTool - " +
+            _notifyIcon.Text = "Middo - " +
                 HotkeyConfig.FormatHotkey(_config.Modifiers, _config.Key);
         }
         finally
@@ -154,15 +162,15 @@ internal class TrayApplicationContext : ApplicationContext
 
         if (enable)
             // 自启时使用 --tray，避免每次开机都弹设置窗口。
-            key.SetValue("WindowCenteringTool", $"\"{Application.ExecutablePath}\" --tray");
+            key.SetValue("Middo", $"\"{Application.ExecutablePath}\" --tray");
         else
-            key.DeleteValue("WindowCenteringTool", throwOnMissingValue: false);
+            key.DeleteValue("Middo", throwOnMissingValue: false);
     }
 
     private void OnHotKeyPressed(object? sender, EventArgs e)
     {
         // 收到 WM_HOTKEY 后居中当前前台窗口。
-        WindowCenteringService.CenterActiveWindow();
+        CenteringService.CenterActiveWindow();
     }
 
     private void ExitApplication()

@@ -1,9 +1,9 @@
-namespace WindowCenteringTool;
+namespace Middo;
 
 /// <summary>
 /// 窗口居中核心逻辑。
 /// </summary>
-internal static class WindowCenteringService
+internal static class CenteringService
 {
     public static void CenterActiveWindow()
     {
@@ -52,7 +52,7 @@ internal static class WindowCenteringService
         catch (Exception ex)
         {
             MessageBox.Show($"居中窗口失败：{ex.Message}",
-                "WindowCenteringTool", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                "Middo", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

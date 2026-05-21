@@ -1,4 +1,4 @@
-namespace WindowCenteringTool;
+namespace Middo;
 
 internal partial class SettingsWindow : Form
 {
